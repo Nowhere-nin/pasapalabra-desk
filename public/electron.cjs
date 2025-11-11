@@ -78,6 +78,11 @@ ipcMain.handle('store:delete', (event, key) => {
   return true;
 });
 
+ipcMain.handle('store:clear', () => {
+  store.clear();
+  return true;
+});
+
 app.whenReady().then(createWindow);
 
 // Cerrar correctamente en macOS

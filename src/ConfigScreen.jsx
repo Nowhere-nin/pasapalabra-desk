@@ -84,6 +84,10 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
   useEffect( () => {
     const load = async () => {
       const data = await window.store.get('roscosPersonalizados');
+      if (!data) {
+        return
+      }
+      
       setSavedRoscos(data)
       
     }

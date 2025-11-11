@@ -9,5 +9,8 @@ contextBridge.exposeInMainWorld('store', {
   },
   delete(key) {
     return ipcRenderer.invoke('store:delete', key);
+  },
+  clear() {
+    return ipcRenderer.invoke('store:clear');
   }
 });

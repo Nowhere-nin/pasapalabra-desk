@@ -73,3 +73,7 @@ button:disabled {
     background-color: #f9f9f9;
   }
 }
+
+.import-input {
+  border: 1px #1a1a1a;
+}

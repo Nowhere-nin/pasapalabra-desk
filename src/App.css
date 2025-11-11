@@ -14,6 +14,7 @@ html {
 
 #root {
   max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -79,10 +80,10 @@ h1, h2, h3 {
   margin-bottom: 10px;
 }
 
-button {
+button, label {
   transition: transform 0.2s ease, background 0.3s ease;
 }
 
-button:hover {
+button:hover, label:hover {
   transform: scale(1.05);
 }
