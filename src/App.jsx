@@ -62,7 +62,7 @@ function App() {
       {screen === 'setup' && (
         <WordSetupScreen
           onFinish={startConfig} // onDinish llama a startConfig para pasar a la pantalla de configuración
-          onBack={() => setScreen('home')} // onBack es el método que se usará para regresar a la pantalla de inicio (home)
+          onBack={() => setScreen('config')} // onBack es el método que se usará para regresar a la pantalla de inicio (home)
         />
       )}
 

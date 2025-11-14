@@ -211,43 +211,6 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
         </button>
       </div>
 
-
-      {/* Botones de exportación/importación */}
-      <div style={{ marginTop: "20px" }}>
-        <h3>Exportar / Importar roscos</h3>
-        <button
-          onClick={() => console.log("Exportar")}
-          style={{
-            padding: "15px 40px",
-            borderRadius: "12px",
-            background: "#27ae60",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1.4rem",
-            marginRight: "20px",
-          }}
-        >
-          Exportar
-        </button>
-
-        <button
-          onClick={() => console.log("Importar")}
-          style={{
-            padding: "15px 40px",
-            borderRadius: "12px",
-            background: "#f39c12",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1.4rem",
-            marginLeft: "10px",
-          }}
-        >
-          Importar
-        </button>
-      </div>
-
       {/* Botón para volver */}
       <div style={{ marginTop: "30px" }}>
         <button

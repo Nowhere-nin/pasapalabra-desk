@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Papa from 'papaparse';
 import XLSX from 'xlsx'
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 export default function WordSetupScreen({ onFinish, onBack }) {
   const [roscoName, setRoscoName] = useState('');
@@ -61,8 +61,15 @@ export default function WordSetupScreen({ onFinish, onBack }) {
         if(!sheetName.includes("Sheet")) {
           setRoscoName(sheetName);
         }
+
+        if( parsed.length <= 30) {
+          setEntries(parsed);
+        } else {
+          setEntries( parsed.slice(0, 30) )
+        }
         
-        setEntries(parsed);
+        
+        
       };
 
       e.target.value = "";
@@ -90,8 +97,9 @@ export default function WordSetupScreen({ onFinish, onBack }) {
     // Comprueba si ingresó un nombre para el rosco
     if (!roscoName.trim()) {
       // alert("Debes ingresar un nombre para tu rosco.");
-      swal("Espera!", "Debes ingresar un nombre para tu rosco", "error")
-      document.getElementById("rosco-name").focus();
+      Swal.fire("¡Espera!", "Debes ingresar un nombre para tu rosco", "error", {
+        timer: 1500,
+      })
       return;
     }
 
@@ -110,12 +118,9 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
       // Comprueba si se añadieron datos válidos para las entradas
     if (filtradas.length === 0) {
-      swal("Espera!", "Debes ingresar al menos una letra, definición y palabra válida.", "error");
+      Swal.fire("¡Espera!", "Debes ingresar al menos una letra, definición y palabra válida.", "error");
       return;
     }
-
-
-
 
     const csvData = entries.map((e) => ({
       Letra: e.letra,
@@ -161,7 +166,13 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
   // Agregar nueva entrada
   const addRow = () => {
-    setEntries([...entries, { letra: "", definicion: "", palabra: [""] }]);
+    if(entries.length < 30) {
+      setEntries([...entries, { letra: "", definicion: "", palabra: [""] }]);
+    } else {
+      Swal.fire("¡Límite alcanzado!", "Se llegó al límite de palabras para el rosco, que es de 30 palabras", "info", {
+        buttons: false,
+      })
+    }
   };
 
   // Remueve una entrada
@@ -202,10 +213,27 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
   // Eliminar rosco en el Store y limpia para crear un nuevo rosco
   const deleteRosco = () => {
-    const updatedList = savedRoscos.filter(r => r.nombre !== roscoName);
-    window.store.set('roscosPersonalizados', updatedList)
-    setSavedRoscos(updatedList);
-    loadRosco('new')
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡No serás capaz de recuperar el rosco si no lo exportaste!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "¡Sí, eliminalo!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedList = savedRoscos.filter(r => r.nombre !== roscoName);
+        window.store.set('roscosPersonalizados', updatedList)
+        setSavedRoscos(updatedList);
+        loadRosco('new');
+        Swal.fire({
+          title: "¡Eliminado!",
+          text: "El rosco fue eliminado con éxito.",
+          icon: "success"
+        });
+      }
+    });
   }
 
 
@@ -214,7 +242,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
     // Comprueba si ingresó un nombre para el rosco
     if (!roscoName.trim()) {
-      swal("Espera!", "Debes ingresar un nombre para tu rosco", "error");
+      Swal.fire("¡Espera!", "Debes ingresar un nombre para tu rosco", "error");
       return;
     }
 
@@ -233,7 +261,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
       // Comprueba si se añadieron datos válidos para las entradas
     if (filtradas.length === 0) {
-      swal("Espera!", "Debes ingresar al menos una letra, definición y palabra válida.", "error");
+      Swal.fire("¡Espera!", "Debes ingresar al menos una letra, definición y palabra válida.", "error");
       return;
     }
 
@@ -241,7 +269,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
     const newRosco = { nombre: roscoName.trim(), palabra: filtradas };
     saveRoscoToStore(newRosco);
 
-    swal("Listo", "Guardado completo", "success", {
+    Swal.fire("Listo", "Guardado completo", "success", {
       buttons: false,
       timer: 1500
     })
@@ -264,7 +292,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
       }}
     >
       <h1 style={{ color: "#007bff", fontSize: "2.8rem" }}>🧩 Crea tu rosco</h1>
-      <p style={{ color: "#2c3e50" , fontSize: "1.4rem"}}>Puedes agregar varias respuestas correctas por definición.</p>
+      <p style={{ color: "#2c3e50" , fontSize: "1.4rem"}}>Puedes agregar varias respuestas correctas por cada letra a responder. <br /> Hay un límite de 4 palabras por definición y un total de 30 letras para el rosco.</p>
 
       {/* Cargar rosco existente */}
       {savedRoscos.length > 0 && (
@@ -447,6 +475,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
               <h3>Letra</h3>
               <input
                 type="text"
+                id={`letter-${i + 1}`}
                 placeholder="Letra"
                 value={item.letra}
                 maxLength={1}
@@ -467,6 +496,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
               <h3>Definición</h3>
               <textarea
                 rows={4}
+                cols={30}
                 placeholder={`Definición N°${i + 1}`}
                 value={item.definicion}
                 onChange={(e) => handleChange(i, "definicion", e.target.value)}
@@ -684,7 +714,6 @@ export default function WordSetupScreen({ onFinish, onBack }) {
               height: "100%",
               borderTopLeftRadius: "0px",
               borderBottomLeftRadius: "0px",
-
               marginRight: "auto",
             }}      
           >

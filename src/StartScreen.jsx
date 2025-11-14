@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function StartScreen({ onStart, onStartPractice }) {
+// export default function StartScreen({ onStart, onStartPractice }) {
+export default function StartScreen({ onStart }) {
 
   return (
     <div
@@ -26,9 +27,9 @@ export default function StartScreen({ onStart, onStartPractice }) {
         de que acabe el tiempo.
       </p>
 
-      <h3 style={{ marginBottom: "10px", fontSize: "1.3rem", }}>
+      {/* <h3 style={{ marginBottom: "10px", fontSize: "1.3rem", }}>
         Selecciona el modo de juego:
-      </h3>
+      </h3> */}
 
       <button
         onClick={onStart}
@@ -43,10 +44,10 @@ export default function StartScreen({ onStart, onStartPractice }) {
           cursor: "pointer",
         }}
       >
-        🧠 Modo normal
+        🧠 Comenzar
       </button>
 
-      <button
+      {/* <button
         onClick={onStartPractice}
         style={{
           padding: "15px 35px",
@@ -60,7 +61,7 @@ export default function StartScreen({ onStart, onStartPractice }) {
         }}
       >
         🎯 Modo práctica
-      </button>
+      </button> */}
     </div>
   );
 }
