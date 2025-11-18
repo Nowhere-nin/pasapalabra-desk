@@ -1,0 +1,81 @@
+.div {
+    text-align: center;
+    background: whitesmoke;
+    padding: 30px 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.h1 {
+    font-size: 3rem;
+    color: #007bff
+}
+
+.h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.p {
+    font-size: 1.3rem; 
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 1.2rem;
+    width: 100px;
+}
+
+.divRosco {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.select {
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    width: 60%;
+}
+
+.divButtons {
+    margin-top: 20px;
+}
+
+.primary {
+    padding: 15px 40px;
+    border-radius: 12px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    margin-right: 20px;
+}
+
+.secondary {
+    padding: 15px 40px;
+    border-radius: 12px;
+    background: #f39c12;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    margin-left: 10px;
+}
+
+.back {
+    padding: 12px 30px;
+    border-radius: 10px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+}

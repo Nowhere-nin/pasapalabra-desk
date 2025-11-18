@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import correctS from './assets/sounds/correct.mp3';
-import incorrectS from './assets/sounds/incorrect.mp3';
-import pasarS from './assets/sounds/pasar.mp3';
+import correctS from '../assets/sounds/correct.mp3';
+import incorrectS from '../assets/sounds/incorrect.mp3';
+import pasarS from '../assets/sounds/pasar.mp3';
 
 
 export default function PracticeMode({ onBack }) {

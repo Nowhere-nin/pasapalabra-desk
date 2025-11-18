@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Papa from 'papaparse';
 import XLSX from 'xlsx'
 import Swal from 'sweetalert2';
+import styles from '../css/WordSetupScreen.module.css';
 
 export default function WordSetupScreen({ onFinish, onBack }) {
   const [roscoName, setRoscoName] = useState('');
@@ -280,25 +281,16 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
   return (
     <div
-      style={{
-        textAlign: "center",
-        maxWidth: "850px",
-        background: "whitesmoke",
-        padding: "30px",
-        borderRadius: "10px",
-        boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-        margin: "auto",
-        width: "100%",
-      }}
+      className={styles.div}
     >
-      <h1 style={{ color: "#007bff", fontSize: "2.8rem" }}>🧩 Crea tu rosco</h1>
-      <p style={{ color: "#2c3e50" , fontSize: "1.4rem"}}>Puedes agregar varias respuestas correctas por cada letra a responder. <br /> Hay un límite de 4 palabras por definición y un total de 30 letras para el rosco.</p>
+      <h1 className={styles.h1} >🧩 Crea tu rosco</h1>
+      <p className={styles.p} >Puedes agregar varias respuestas correctas por cada letra a responder. <br /> Hay un límite de 4 palabras por definición y un total de 30 letras para el rosco.</p>
 
       {/* Cargar rosco existente */}
       {savedRoscos.length > 0 && (
-        <div style={{ marginBottom: "20px" }}>
+        <div className={styles.divSelect}>
           <label style={{ fontSize: "1.2rem" }}>Cargar rosco existente: </label>
-          <select onChange={(e) => loadRosco(e.target.value)} defaultValue="" style={{ padding: "10px", borderRadius: "8px", border: "1px solid #ccc", outline: "none", fontSize: "1rem" }}>
+          <select onChange={(e) => loadRosco(e.target.value)} defaultValue="" className={styles.select}>
             <option value="new">-- Selecciona uno --</option>
             {savedRoscos.map((r, i) => (
               <option key={i} value={r.nombre}>{r.nombre}</option>
@@ -308,7 +300,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
       )}
 
       {/* Nombre del rosco */}
-      <div style={{ marginBottom: "15px" }}>
+      <div className={styles.divSelect}>
         <h2>Ingrese un nombre para el rosco</h2>
         <input
           type="text"
@@ -316,163 +308,19 @@ export default function WordSetupScreen({ onFinish, onBack }) {
           value={roscoName}
           id="rosco-name"
           onChange={(e) => setRoscoName(e.target.value)}
-          style={{
-            width: "60%",
-            padding: "10px",
-            borderRadius: "10px",
-            border: "1px solid #ccc",
-            fontSize: "1.2rem",
-          }}
+          className={styles.inputTitle}
         />
       </div>
 
       {/* Entradas */}
-      {/* <div>
-        {entries.map((item, i) => (
-          <div
-            key={i}
-            style={{
-              marginBottom: "25px",
-              padding: "15px",
-              borderRadius: "15px",
-              background: "#f8f9fa",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
-            }}
-          >
-            <h3 style={{ margin: "auto" }}>Letra</h3>
-            <input
-              type="text"
-              placeholder="Letra"
-              value={item.letra}
-              maxLength={1}
-              onChange={(e) => handleChange(i, "letra", e.target.value)}
-              style={{
-                width: "50px",
-                padding: "10px",
-                borderRadius: "10px",
-                border: "1px solid #ccc",
-                textAlign: "center",
-                fontWeight: "bold",
-                fontSize: "1rem"
-              }}
-            />
-
-            <h3 >Definición</h3>
-            <textarea
-              rows={2}
-              placeholder={`Definición N°${i+1}`}
-              value={item.definicion}
-              onChange={(e) => handleChange(i, "definicion", e.target.value)}
-              style={{
-                width: "70%",
-                padding: "12px",
-                borderRadius: "10px",
-                border: "1px solid #ccc",
-                marginBottom: "10px",
-                fontSize: "1.1rem",
-                resize: "none",
-                fontFamily: "Poppins, sans-serif",
-              }}
-            />
-
-            <h3 style={{ marginTop: "5px" }}>Palabra(s) correcta(s)</h3>
-            <div>
-              {item.palabra.map((pal, j) => (
-                <input
-                  key={j}
-                  type="text"
-                  placeholder={`Palabra ${j + 1}`}
-                  value={pal}
-                  onChange={(e) => handleWordChange(i, j, e.target.value)}
-                  style={{
-                    width: "35%",
-                    padding: "10px",
-                    borderRadius: "10px",
-                    border: "1px solid #ccc",
-                    margin: "5px",
-                    fontSize: "1.1rem"
-                  }}
-                />
-              ))}
-              <br />
-
-              <button
-                onClick={() => addWordToEntry(i)}
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "10px",
-                  background: "#3498db",
-                  color: "white",
-                  border: "none",
-                  cursor: "pointer",
-                  margin: "10px",
-                  fontSize: "1.1rem"
-                }}
-              >
-                Otra palabra
-              </button>
-              <button
-                onClick={() => removeWordToEntry(i)}
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "10px",
-                  background: "#db9834ff",
-                  color: "white",
-                  border: "none",
-                  cursor: "pointer",
-                  margin: "10px",
-                  fontSize: "1.1rem"
-                }}
-                disabled={
-                  entries[i].palabra.length <= 1 ? true : false
-                }
-              >
-                Quitar palabra
-              </button>
-              <br />
-              <button
-                onClick={() => removeRow(i)}
-                style={{
-                  marginTop: "15px",
-                  padding: "10px 20px",
-                  borderRadius: "10px",
-                  background: "#db3f34ff",
-                  color: "white",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: "1.2rem"
-                }}
-                disabled={
-                  entries.length <= 1 ? true : false
-                }
-              >
-                Quitar definición
-              </button>
-            </div>
-          </div>
-        ))}
-      </div> */}
-
-      {/* Entradas */}
       <div>
         {entries.map((item, i) => (
-          <div
+          <div 
             key={i}
-            style={{
-              marginBottom: "25px",
-              padding: "15px",
-              borderRadius: "15px",
-              background: "#f8f9fa",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-              display: "flex",
-              // flexDirection: "column", // 👈 Esto fuerza disposición vertical
-              flexDirection: "row",
-              justifyContent: "center",
-              gap: "30px"
-            }}
+            className={styles.divEntries}
           >
             <div>
-              <h3>Letra</h3>
+              <h3>Letra Nº{i+1}</h3>
               <input
                 type="text"
                 id={`letter-${i + 1}`}
@@ -480,15 +328,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
                 value={item.letra}
                 maxLength={1}
                 onChange={(e) => handleChange(i, "letra", e.target.value)}
-                style={{
-                  width: "50px",
-                  padding: "10px",
-                  borderRadius: "10px",
-                  border: "1px solid #ccc",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: "1rem"
-                }}
+                className={styles.inputLetter}
               />
             </div>
 
@@ -500,26 +340,13 @@ export default function WordSetupScreen({ onFinish, onBack }) {
                 placeholder={`Definición N°${i + 1}`}
                 value={item.definicion}
                 onChange={(e) => handleChange(i, "definicion", e.target.value)}
-                style={{
-                  width: "90%",
-                  padding: "12px",
-                  borderRadius: "10px",
-                  border: "1px solid #ccc",
-                  fontSize: "1.1rem",
-                  resize: "none",
-                  fontFamily: "Poppins, sans-serif"
-                }}
+                className={styles.inputDescription}
               />
             </div>
 
             <div
-              style={{
-                display: "flex",
-                flexDirection: "column", // 👈 vertical dentro del subgrupo también
-                alignItems: "center",
-                gap: "8px"
-              }}
-              >
+              className={styles.divWords}
+            >
               <h3>Palabra(s) correcta(s)</h3>
               {item.palabra.map((pal, j) => (
                 <input
@@ -528,65 +355,30 @@ export default function WordSetupScreen({ onFinish, onBack }) {
                   placeholder={`Palabra ${j + 1}`}
                   value={pal}
                   onChange={(e) => handleWordChange(i, j, e.target.value)}
-                  style={{
-                    width: "60%",
-                    padding: "10px",
-                    borderRadius: "10px",
-                    border: "1px solid #ccc",
-                    fontSize: "1.1rem"
-                  }}
+                  className={styles.inputWord}
                 />
               ))}
 
+              {/* Botónes manejo de entradas  */}
               <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                  marginTop: "10px"
-                }}
+                className={styles.divButtonsEntries}
               >
                 <div
-                  style={{
-                    display: "flex",
-                    justifyContent:"center",
-                  }}
+                  className={styles.secondDiv}
                 >
                   <button
                     onClick={() => addWordToEntry(i)}
-                    style={{
-                      padding: "8px 16px",
-                      borderRadius: "10px",
-                      background: "#3498db",
-                      color: "white",
-                      border: "none",
-                      cursor: "pointer",
-                      fontSize: "1.1rem"
-                    }}
+                    className={styles.buttonAddWord}
                   >
                     Otra palabra
                   </button>
                 </div>
                 <div
-                  style={{
-                    display:"flex",
-                    flexDirection: "row",
-                    gap: "10px"
-                  }}
+                  className={styles.divButtonsRemove}
                 >
                   <button
                     onClick={() => removeWordToEntry(i)}
-                    style={{
-                      padding: "8px 16px",
-                      borderRadius: "10px",
-                      background: "#db9834ff",
-                      color: "white",
-                      border: "none",
-                      cursor: "pointer",
-                      fontSize: "1.1rem"
-                    }}
+                    className={styles.buttonRemoveWord}
                     disabled={entries[i].palabra.length <= 1}
                   >
                     Quitar palabra
@@ -594,15 +386,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
                   <button
                     onClick={() => removeRow(i)}
-                    style={{
-                      padding: "10px 20px",
-                      borderRadius: "10px",
-                      background: "#db3f34ff",
-                      color: "white",
-                      border: "none",
-                      cursor: "pointer",
-                      fontSize: "1.1rem"
-                    }}
+                    className={styles.buttonRemoveDefinition}
                     disabled={entries.length <= 1}
                   >
                     Quitar definición
@@ -616,60 +400,25 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
       <button
         onClick={addRow}
-        style={{
-          marginTop: "15px",
-          padding: "10px 20px",
-          borderRadius: "10px",
-          background: "#2980b9",
-          color: "white",
-          border: "none",
-          cursor: "pointer",
-          fontSize: "1.2rem"
-        }}
+        className={styles.buttonAddRow}
       >
         ➕ Añadir nueva definición
       </button>
 
-      <div style={{ marginTop: "30px" }}>
-
+      <div className={styles.divButtonsRosco}>
         <div
-          style={{
-            height: "100%",
-            display: "flex",
-          }}
+          className={styles.divContainer}
         >
           <button
             onClick={handleFinish}
-            style={{
-              padding: "15px 45px",
-              borderRadius: "12px",
-              background: "#27ae60",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              marginLeft: "auto",
-              marginRight: "5px",
-              width: "35%",
-            }}
+            className={styles.buttonSave}
           >
             💾 Guardar
           </button>
 
           <button
             onClick={onBack}
-            style={{
-              padding: "15px 45px",
-              borderRadius: "12px",
-              background: "#e74c3c",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              marginRight: "auto",
-              marginLeft: "5px",
-              width: "35%",
-            }}
+            className={styles.buttonBack}
           >
             ⬅️ Volver
           </button>
@@ -678,44 +427,17 @@ export default function WordSetupScreen({ onFinish, onBack }) {
         <br />
         
         <div
-          style={{
-            height: "100%",
-            display: "flex",
-          }}
+          className={styles.divContainer}
         >
           <button
             onClick={handleExport}
-            style={{
-              padding: "15px 45px",
-              borderRadius: "12px",
-              background: "#27ae60",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              borderTopRightRadius: "0px",
-              borderBottomRightRadius: "0px",
-
-              marginLeft: "auto"
-            }}
+            className={styles.buttonExport}
           >
             📤 Exportar
           </button>
           <label
             htmlFor="import-input"
-            style={{
-              padding: "15px 45px",
-              borderRadius: "12px",
-              background: "#e7973cff",
-              color: "white",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              height: "100%",
-              borderTopLeftRadius: "0px",
-              borderBottomLeftRadius: "0px",
-              marginRight: "auto",
-            }}      
+            className={styles.buttonImport}   
           >
             📥 Importar
           </label>
@@ -732,15 +454,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
 
         <button
           onClick={deleteRosco}
-          style={{
-            padding: "15px 45px",
-            background: "#27ae60",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1.2rem",
-            marginTop: "10px",
-          }}
+          className={styles.buttonDelete}
           disabled = {
             !roscoLoaded
           }

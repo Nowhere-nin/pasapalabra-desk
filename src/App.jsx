@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import './App.css';
-import StartScreen from './StartScreen';
-import ConfigScreen from './ConfigScreen';
-import WordSetupScreen from './WordSetupScreen';
-import PasapalabraApp from './PasapalabraApp';
-import PracticeMode from './PracticeMode';
+import StartScreen from './components/StartScreen';
+import ConfigScreen from './components/ConfigScreen';
+import WordSetupScreen from './components/WordSetupScreen';
+import PasapalabraApp from './components/PasapalabraApp';
+import PracticeMode from './components/PracticeMode';
 
 
 function App() {

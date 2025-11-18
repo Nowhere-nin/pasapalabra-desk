@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styles from '../css/ConfigScreen.module.css';
 
 // 
 const defaultWords = [
@@ -118,23 +119,23 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
 
   return (
     <div
-      style={{
-        textAlign: "center",
-        background: "whitesmoke",
-        padding: "30px 30px",
-        borderRadius: "10px",
-        boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-      }}
+      className={styles.div}
     >
-      <h1 style={{ fontSize: "3rem", color: "#007bff" }}>⚙️ Configuración del juego</h1>
-      <p style={{ fontSize: "1.3rem", color: "#2c3e50", marginBottom: "30px" }}>
+      <h1 
+        className={styles.h1}
+      >⚙️ Configuración del juego</h1>
+      <p 
+        className={styles.p}
+      >
         Elige el tiempo por palabra y si deseas usar palabras predefinidas o un rosco personalizado.
         <br />
         (Por defecto usa palabras de un rosco matemático)
       </p>
 
       {/* Tiempo por palabra */}
-      <h3 style={{ fontSize: "1.2rem", marginBottom: "10px" }}>⏱️ Tiempo por palabra</h3>
+      <h3
+        className={styles.h3}
+      >⏱️ Tiempo por palabra</h3>
 
       <input
         type="number"
@@ -142,29 +143,20 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
         max={120}
         value={time}
         onChange={(e) => setTime(e.target.value)}
-        style={{
-          padding: "10px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          outline: "none",
-          fontSize: "1.2rem",
-          width: "100px",
-        }}
+        className={styles.input}
       />
 
       {/* Selector de rosco */}
-      <div style={{ marginTop: "30px", marginBottom: "20px" }}>
-        <h3 style={{ fontSize: "1.2rem", marginBottom: "10px" }}>📘 Selecciona un rosco</h3>
+      <div 
+        className={styles.divRosco}
+      >
+        <h3
+          className={styles.h3}
+        >📘 Selecciona un rosco</h3>
         <select
           value={selectedRosco}
           onChange={(e) => setSelectedRosco(e.target.value)}
-          style={{
-            padding: "10px",
-            borderRadius: "8px",
-            fontSize: "1.1rem",
-            border: "1px solid #ccc",
-            width: "60%",
-          }}
+          className={styles.select}
         >
           <option value="default">🧩 Rosco por defecto</option>
           {/* Carga los roscos guardados */}
@@ -177,53 +169,31 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
       </div>
 
       {/* Botones principales */}
-      <div style={{ marginTop: "20px" }}>
+      <div
+        className={styles.divButtons}
+      >
         <button
           onClick={() => handleContinuar("rules")}
-          style={{
-            padding: "15px 40px",
-            borderRadius: "12px",
-            background: "#27ae60",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1.4rem",
-            marginRight: "20px",
-          }}
+          className={styles.primary}
         >
           ▶️ Iniciar juego
         </button>
 
         <button
           onClick={() => handleContinuar("setup")}
-          style={{
-            padding: "15px 40px",
-            borderRadius: "12px",
-            background: "#f39c12",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1.4rem",
-            marginLeft: "10px",
-          }}
+          className={styles.secondary}
         >
           ✏️ Roscos personalizados
         </button>
       </div>
 
       {/* Botón para volver */}
-      <div style={{ marginTop: "30px" }}>
+      <div
+        className={styles.divButtons}
+      >
         <button
           onClick={onBack}
-          style={{
-            padding: "12px 30px",
-            borderRadius: "10px",
-            background: "#e74c3c",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "1.4rem",
-          }}
+          className={styles.back}
         >
           🚪 Volver al inicio
         </button>
