@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from '../css/ConfigScreen.module.css';
+import Swal from 'sweetalert2';
 
 // 
 const defaultWords = [
@@ -85,33 +86,46 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
   useEffect( () => {
     const load = async () => {
       const data = await window.store.get('roscosPersonalizados');
-      if (!data) {
+      if (!data || data == null || data == undefined) {
+        setSavedRoscos([]);
         return
       }
-      
       setSavedRoscos(data)
-      
     }
-
     load();
   }, []);
 
   
   // Cargar palabras del rosco seleccionado
   useEffect(() => {
+    // if (selectedRosco != 'default') {
+    //   savedRoscos.map(({ nombre, palabra }) => {
+    //     if(selectedRosco === nombre) {
+    //       setSelectedWords(palabra)
+    //     }
+    //   })
+    // }
     if (selectedRosco != 'default') {
-      savedRoscos.map(({ nombre, palabra }) => {
-        if(selectedRosco === nombre) {
-          setSelectedWords(palabra)
-        }
-      })
+      const rosco = savedRoscos.find(r => r.nombre === selectedRosco);
+      if (rosco) {
+        setSelectedWords(rosco.palabra);
+      } else if (selectedRosco === 'default') {
+        setSelectedWords(defaultWords);
+      }
     }
-
-  }, [selectedRosco])
+  }, [selectedRosco, savedRoscos])
 
 
   // Manejar botón continuar para comenzar juego
   const handleContinuar = (mode) => {
+    if (time < 20 && mode === "rules") {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Tiempo mínimo alcanzado',
+        text: 'El tiempo mínimo por palabra es de 20 segundos.',
+      });
+      return;
+    }
     onSetTime(Number(time)); // Pasa el tiempo establecido
     onSelectMode(mode, selectedWords); // Pasa el modo y las palabras del rosco seleccionado, si no se seleccionó ninguno pasa las palabras por defecto
     onSelectRosco(selectedRosco); // Envía el nombre del rosco seleccionado
@@ -136,13 +150,21 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
       <h3
         className={styles.h3}
       >⏱️ Tiempo por palabra</h3>
+      <p
+        className={styles.p}
+      >Mínimo 20 - Máximo 120</p>
 
       <input
         type="number"
         min={20}
         max={120}
         value={time}
-        onChange={(e) => setTime(e.target.value)}
+        onChange={(e) => {
+          const v = Number(e.target.value);
+          if (Number.isNaN(v)) return;
+          const clamped = Math.min(120, Math.max(1, v));
+          setTime(clamped);
+        }}
         className={styles.input}
       />
 
@@ -160,9 +182,9 @@ export default function ConfigScreen({ onSelectMode, onBack, onSetTime, onSelect
         >
           <option value="default">🧩 Rosco por defecto</option>
           {/* Carga los roscos guardados */}
-          {savedRoscos.map((r, i) => (
-            <option key={i} value={r.nombre}>
-              {r.nombre}
+          {savedRoscos.map(( { nombre } ) => (
+            <option key={nombre} value={nombre}>
+              {nombre}
             </option>
           ))}
         </select>

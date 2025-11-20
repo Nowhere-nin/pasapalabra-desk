@@ -10,7 +10,7 @@ import PracticeMode from './components/PracticeMode';
 function App() {
   const [screen, setScreen] = useState('home'); //Para establecer que parte de la aplicación se mostrará
   const [timePerWord, setTimePerWord] = useState(30); // Se usa en la sección de configuración del rosco para establecer cuanto tiempo por palabra se usará
-  const [customUse, setCustomUse] = useState(false); // Se utilizaran o no palabras personalizadas: true o false
+  // const [customUse, setCustomUse] = useState(false); // Se utilizaran o no palabras personalizadas: true o false
   const [customWords, setCustomWords] = useState([]); // Que palabras personalizadas se usarán
   const [selectedRosco, setSelectedRosco] = useState('default'); // El nombre del rosco a usar
 
@@ -21,10 +21,7 @@ function App() {
 
   // Seleccionar el modo y palabras a utilizar a utilizar
   const selectMode = (mode, words) => {
-    setCustomWords(words)
-    if (words) {
-      setCustomUse(true)
-    }
+    setCustomWords(words);
     setScreen(mode);
   };
 
@@ -70,7 +67,8 @@ function App() {
       {screen === 'game' && (
         <PasapalabraApp
           initialTime={timePerWord} // initialTime pasa el tiempo establecido para cada palabra del rosco
-          customWords={customUse ? customWords : null} // customWords pregunta si se utilizarán palabras personalizadas y si es así, pasa las palabras escogidas
+          // customWords={customUse ? customWords : null} // customWords pregunta si se utilizarán palabras personalizadas y si es así, pasa las palabras escogidas
+          customWords={customWords} // customWords pregunta si se utilizarán palabras personalizadas y si es así, pasa las palabras escogidas
           onBack={() => setScreen('home')} // onBack es el método que se usará para regresar a la pantalla de inicio (home)
           selectedRosco={selectedRosco} // selectedRosco pasa el el nombre del rosco seleccionado
         />

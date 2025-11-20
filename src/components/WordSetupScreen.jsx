@@ -13,13 +13,9 @@ export default function WordSetupScreen({ onFinish, onBack }) {
   // Cargar roscos guardados del Store
   useEffect( () => {
     const load = async () => {
-      const data = await window.store.get('roscosPersonalizados');
-      if(!data) {
-        return;
-      }
-
-      setSavedRoscos(data)
-    }
+      const data = await window.store?.get('roscosPersonalizados');
+      setSavedRoscos(Array.isArray(data) ? data : []);
+    };
     load();
   }, []);
 
@@ -82,7 +78,7 @@ export default function WordSetupScreen({ onFinish, onBack }) {
           const parsed = results.data.map((row) => ({
             letra: row.Letra || "",
             definicion: row.Definicion || "",
-            palabras: row.Palabras ? row.Palabras.split(",").map((p) => p.trim()) : [""],
+            palabra: row.Palabras ? String(row.Palabras).split(",").map((p) => p.trim()) : [""],
           }));
           setEntries(parsed);
         },
@@ -191,9 +187,11 @@ export default function WordSetupScreen({ onFinish, onBack }) {
   // Cargar rosco existente o limpia para crear uno nuevo
   const loadRosco = (nombre) => {
 
-    nombre != 'new' || '' ? setRoscoLoaded(true) : setRoscoLoaded(false);
+    // nombre != 'new' || '' ? setRoscoLoaded(true) : setRoscoLoaded(false);
+    setRoscoLoaded(Boolean(nombre) && nombre !== "new");
     
     const rosco = savedRoscos.find(r => r.nombre === nombre);
+    
     if (rosco) {
       setRoscoName(rosco.nombre);
       setEntries(rosco.palabra);
@@ -206,7 +204,6 @@ export default function WordSetupScreen({ onFinish, onBack }) {
   // Guardar rosco en el Store
   const saveRoscoToStore = (rosco) => {
     const updatedList = savedRoscos.filter(r => r.nombre !== rosco.nombre);
-    deleteRosco(rosco)
     updatedList.push(rosco);
     window.store.set('roscosPersonalizados', updatedList)
     setSavedRoscos(updatedList);
@@ -292,8 +289,8 @@ export default function WordSetupScreen({ onFinish, onBack }) {
           <label style={{ fontSize: "1.2rem" }}>Cargar rosco existente: </label>
           <select onChange={(e) => loadRosco(e.target.value)} defaultValue="" className={styles.select}>
             <option value="new">-- Selecciona uno --</option>
-            {savedRoscos.map((r, i) => (
-              <option key={i} value={r.nombre}>{r.nombre}</option>
+            {savedRoscos.map((r) => (
+              <option key={r.nombre} value={r.nombre}>{r.nombre}</option>
             ))}
           </select>
         </div>
