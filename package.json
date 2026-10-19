@@ -28,7 +28,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
-    "electron": "^38.3.0",
+    "electron": "^44.9.0",
     "electron-builder": "^26.0.12",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -47,7 +47,8 @@
     "files": [
       "dist/**/*",
       "node_modules/**/*",
-      "public/electron.cjs"
+      "public/electron.cjs",
+      "public/preload.cjs"
     ],
     "win": {
       "target": "nsis"
